@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.children
+import androidx.core.widget.addTextChangedListener
 import com.google.android.material.chip.Chip
 import fastcampus.part1.chapter7.databinding.ActivityAddBinding
 
@@ -29,6 +30,16 @@ class AddActivity : AppCompatActivity() {
         val types = listOf("명사", "대명사", "동사", "전치사", "접속사", "형용사", "전치사", "부사")
         binding.typeChipGroup.apply {
             types.forEach { text -> addView(createChip(text)) }
+        }
+
+        binding.textInputEditText.addTextChangedListener {
+            it?.let { text ->
+                binding.textTextInputLayout.error = when(text.length) {
+                    0 -> "값을 입력해주세요"
+                    1 -> "2자 이상 입력해주세요"
+                    else -> null
+                }
+            }
         }
 
         originWord = intent.getParcelableExtra<Word>("originWord")
